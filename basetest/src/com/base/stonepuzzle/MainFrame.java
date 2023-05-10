@@ -8,13 +8,16 @@ import java.util.List;
 import java.util.Random;
 
 public class MainFrame extends JFrame implements KeyListener {
-    int [][] data = {
-            {1,2,3,4},
-            {5,6,7,8},
-            {9,10,11,12},
-            {13,14,15,0}
+    int[][] data = {
+            {1, 2, 3, 4},
+            {5, 6, 7, 8},
+            {9, 10, 11, 12},
+            {13, 14, 15, 0}
     };
-    public MainFrame(){
+    int row;
+    int column;
+
+    public MainFrame() {
         this.addKeyListener(this);
         initFrame();
         initData();
@@ -23,10 +26,11 @@ public class MainFrame extends JFrame implements KeyListener {
         setVisible(true);
     }
 //    JFrame frame = new JFrame();
+
     /**
      *
      */
-    public void initFrame(){
+    public void initFrame() {
 
 
         setSize(514, 595);
@@ -39,7 +43,7 @@ public class MainFrame extends JFrame implements KeyListener {
 
     }
 
-    public void initData(){
+    public void initData() {
         Random r = new Random();
         for (int i = 0; i < data.length; i++) {
             for (int j = 0; j < data[i].length; j++) {
@@ -51,9 +55,18 @@ public class MainFrame extends JFrame implements KeyListener {
                 data[rx][ry] = temp;
             }
         }
+
+        for (int i = 0; i < data.length; i++) {
+            for (int j = 0; j < data[i].length; j++) {
+                if (0 == data[i][j]) {
+                    row = i;
+                    column = j;
+                }
+            }
+        }
     }
 
-    public void paintView(){
+    public void paintView() {
 
         List<JLabel> jLabelList = new ArrayList<>();
 
@@ -70,28 +83,44 @@ public class MainFrame extends JFrame implements KeyListener {
         }
         String path = "E:\\image\\background.png";
         JLabel background = new JLabel(new ImageIcon(path));
-        background.setBounds(26,30,450,484);
+        background.setBounds(26, 30, 450, 484);
         getContentPane().add(background);
     }
+
     @Override
     public void keyPressed(KeyEvent e) {
         move(e);
     }
 
     /**
-     *
      * @param e
      */
-    private static void move(KeyEvent e) {
+    private void move(KeyEvent e) {
         int keyCode = e.getKeyCode();
-        if (keyCode==37){
+        if (keyCode == 37) {
             System.out.println("左");
-        }else if (keyCode==38){
+            int temp = data[row][column];
+            data[row][column]=data[row][column + 1];
+            data[row][column+1]=temp;
+            column++;
+        } else if (keyCode == 38) {
             System.out.println("上");
-        }else if (keyCode==39){
+            int temp = data[row][column];
+            data[row][column]=data[row+1][column];
+            data[row+1][column]=temp;
+            row++;
+        } else if (keyCode == 39) {
             System.out.println("右");
-        }else if (keyCode==40){
+            int temp = data[row][column];
+            data[row][column]=data[row][column-1];
+            data[row][column-1]=temp;
+            column--;
+        } else if (keyCode == 40) {
             System.out.println("下");
+            int temp = data[row][column];
+            data[row][column]=data[row-1][column];
+            data[row-1][column]=temp;
+            row--;
         }
     }
 
